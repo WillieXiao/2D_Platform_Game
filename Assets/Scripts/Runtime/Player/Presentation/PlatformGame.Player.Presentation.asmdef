@@ -1,0 +1,16 @@
+{
+    "name": "PlatformGame.Player.Presentation",
+    "rootNamespace": "PlatformGame.Player.Presentation",
+    "references": [
+        "GUID:16fed0c1708c951459aec5e680c0b48f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,28 @@
+{
+    "name": "PlatformGame.Test.Editor",
+    "rootNamespace": "PlatformGame.Test.Editor",
+    "references": [
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:7bce08a00b4d54cd694096abadbb897e",
+        "GUID:44f643eb219b59543b2e2eb548bb91b7",
+        "GUID:6f06d5cdbcf2f2647b1a17cef06d2299",
+        "GUID:67ac2a47646e6f04f95edb802bdfee1f",
+        "GUID:db77e982629756f42acae9d0fe6f2c7d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "NSubstitute.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
