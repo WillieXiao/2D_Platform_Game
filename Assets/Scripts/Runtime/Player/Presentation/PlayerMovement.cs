@@ -6,11 +6,9 @@ namespace PlatformGame.Player.Presentation
     public class PlayerMovement : MonoBehaviour,IPlayerMovement
     {
         private Rigidbody2D rigidbody;
-        
-
 
         // Start is called before the first frame update
-        public void Start()
+        void Start()
         {
             Initialize();
 
