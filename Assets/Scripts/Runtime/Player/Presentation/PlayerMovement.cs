@@ -6,7 +6,7 @@ namespace PlatformGame.Player.Presentation
     public class PlayerMovement : MonoBehaviour,IPlayerMovement
     {
         private Rigidbody rigidbody;
-      
+        
 
 
         // Start is called before the first frame update
@@ -22,9 +22,10 @@ namespace PlatformGame.Player.Presentation
         
         }
 
-        public void Move(Vector2 movement)
+        public void PlayerMove(Vector2 moveVector)
         {
-            throw new System.NotImplementedException();
+            rigidbody.velocity = moveVector;
+
         }
 
     }

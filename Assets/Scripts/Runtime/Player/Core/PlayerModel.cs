@@ -57,5 +57,11 @@ namespace PlatformGame.Player.Core
             MoveSpeed = newMoveSpeed;
         }
 
+        public void SetJumpForce(float newJumpForce)
+        {
+            JumpForce = newJumpForce;
+        }
+
+
     }
 }

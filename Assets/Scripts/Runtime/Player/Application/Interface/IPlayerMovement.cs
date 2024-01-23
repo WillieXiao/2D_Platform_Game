@@ -6,6 +6,6 @@ namespace PlatformGame.Player.Application
 {
     public interface IPlayerMovement
     {
-        public void Move(Vector2 movement);
+        public void PlayerMove(Vector2 movement);
     }
 }
