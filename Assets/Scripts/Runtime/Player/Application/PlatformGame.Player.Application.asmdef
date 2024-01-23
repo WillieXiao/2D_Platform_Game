@@ -2,7 +2,8 @@
     "name": "PlatformGame.Player.Application",
     "rootNamespace": "PlatformGame.Player.Application",
     "references": [
-        "GUID:db77e982629756f42acae9d0fe6f2c7d"
+        "GUID:db77e982629756f42acae9d0fe6f2c7d",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

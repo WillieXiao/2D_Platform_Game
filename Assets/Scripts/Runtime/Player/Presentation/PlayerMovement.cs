@@ -5,14 +5,14 @@ namespace PlatformGame.Player.Presentation
 {
     public class PlayerMovement : MonoBehaviour,IPlayerMovement
     {
-        private Rigidbody rigidbody;
+        private Rigidbody2D rigidbody;
         
 
 
         // Start is called before the first frame update
-        void Start()
+        public void Start()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            Initialize();
 
         }
 
@@ -22,11 +22,17 @@ namespace PlatformGame.Player.Presentation
         
         }
 
+        public void Initialize()
+        {
+            rigidbody = GetComponent<Rigidbody2D>();
+        }
+
         public void PlayerMove(Vector2 moveVector)
         {
             rigidbody.velocity = moveVector;
 
         }
 
+        
     }
 }

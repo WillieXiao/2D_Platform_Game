@@ -2,13 +2,14 @@ using PlatformGame.Player.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 namespace PlatformGame.Player.Application
 {
     public class PlayerPresenter
-    {
-        private readonly PlayerModel playerModel;
-        private readonly IPlayerMovement playerMovement;
+    {       
+        [Inject] private readonly PlayerModel playerModel;
+        [Inject] private readonly IPlayerMovement playerMovement;
 
         public PlayerPresenter(PlayerModel playerModel,IPlayerMovement playerMovement)
         {

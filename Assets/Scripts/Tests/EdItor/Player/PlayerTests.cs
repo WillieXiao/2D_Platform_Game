@@ -1,9 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using NUnit.Framework;
 using VContainer;
 using PlatformGame.Player.Core;
+using PlatformGame.Player.Application;
+using PlatformGame.Player.Presentation;
+using VContainer.Unity;
+using NSubstitute;
+
 
 namespace PlatformGame.Test.Editor
 {
@@ -15,20 +18,30 @@ namespace PlatformGame.Test.Editor
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.Register<PlayerModel>(Lifetime.Scoped);
+            builder.Register<PlayerPresenter>(Lifetime.Scoped);
+
+            fakePlayer = new GameObject();
+            fakePlayer.AddComponent<Rigidbody2D>();
+            var playerInputManager = fakePlayer.AddComponent<PlayerInputManager>();
+            var playerMovement = fakePlayer.AddComponent<PlayerMovement>();
+            builder.RegisterComponent<PlayerMovement>(playerMovement).As<IPlayerMovement>();
+
             builder.Build().Inject(this);
+
         }
 
-        [Inject]
-        private readonly PlayerModel player;
+
+        GameObject fakePlayer;
+        [Inject] private readonly PlayerModel playerModel;
+        [Inject] private readonly PlayerPresenter playerPresenter;
+        [Inject] private readonly IPlayerMovement playerMovement;
 
         [Test,Order(0)]
         public void When_Created_Then_InitializeProperties()
         {
-            Assert.IsNotNull(player.MaxHealth);
-            Assert.IsNotNull(player.MinHealth);
-            Assert.IsNotNull(player.Health);
-            Assert.IsNotNull(player.MoveSpeed);
-            Assert.IsNotNull(player.JumpForce);
+            Assert.IsNotNull(playerModel);
+            Assert.IsNotNull(playerPresenter);
+            Assert.IsNotNull(playerMovement);
         }
 
         [Test, Order(1)]
@@ -38,10 +51,10 @@ namespace PlatformGame.Test.Editor
         [TestCase(0, 110, 0, 100, 100)]
         public void Given_HealthValue_When_TakeHeal_Then_IncreaseInRangeAndIsCorrectValue(float initialValue, float healingValue, float minValue, float maxValue, float targetValue)
         {
-            player.SetHealthRange(minValue, maxValue);
-            player.SetHealth(initialValue);
-            player.IncreaseHealth(healingValue);
-            Assert.AreEqual(targetValue, player.Health);
+            playerModel.SetHealthRange(minValue, maxValue);
+            playerModel.SetHealth(initialValue);
+            playerModel.IncreaseHealth(healingValue);
+            Assert.AreEqual(targetValue, playerModel.Health);
 
         }
 
@@ -52,14 +65,29 @@ namespace PlatformGame.Test.Editor
         [TestCase(100, 110, 0, 100, 0)]
         public void Given_HealthValue_When_TakeDamage_Then_DecreaseInRangeAndIsCorrectValue(float initialValue,float damageValue,float minValue,float maxValue,float targetValue)
         {
-            player.SetHealthRange(minValue,maxValue);
-            player.SetHealth(initialValue);
-            player.DecreaseHealth(damageValue);
-            Assert.AreEqual(targetValue, player.Health);
+            playerModel.SetHealthRange(minValue,maxValue);
+            playerModel.SetHealth(initialValue);
+            playerModel.DecreaseHealth(damageValue);
+            Assert.AreEqual(targetValue, playerModel.Health);
 
         }
 
-       
+        [Test, Order(3)]
+        [TestCase(5,-1,-5)]
+        public void When_HorizontalInput_Then_PlayerMovement(float speed,float horizontalAxisInput, float targetVectorX)
+        {
+            //arrange
+            playerModel.SetMoveSpeed(speed);
+            playerMovement.Initialize();
+
+            //act
+            playerPresenter.OnPlayerMove(new Vector2(horizontalAxisInput, 0));
+
+            //assert
+            var rigibody2D = fakePlayer.GetComponent<Rigidbody2D>();
+            Assert.AreEqual(new Vector2(targetVectorX, 0), rigibody2D.velocity);
+
+        }
 
     }
 }
