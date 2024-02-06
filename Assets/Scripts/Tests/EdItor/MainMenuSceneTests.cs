@@ -5,8 +5,7 @@ using VContainer;
 using NUnit.Framework;
 using VContainer.Unity;
 using NSubstitute;
-using PlatformGame.UI.Application;
-using PlatformGame.Game.Application;
+using PlatformGame.Application.Services;
 
 namespace PlatformGame.Test.Editor
 {

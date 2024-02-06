@@ -1,0 +1,17 @@
+{
+    "name": "PlatformGame.Application",
+    "rootNamespace": "PlatformGame.Application",
+    "references": [
+        "GUID:db77e982629756f42acae9d0fe6f2c7d",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

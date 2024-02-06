@@ -1,12 +1,11 @@
 using UnityEngine;
 using NUnit.Framework;
 using VContainer;
-using PlatformGame.Player.Core;
-using PlatformGame.Player.Application;
-using PlatformGame.Player.Presentation;
 using VContainer.Unity;
 using NSubstitute;
-
+using PlatformGame.Domain.Entities;
+using PlatformGame.Application.Services;
+using PlatformGame.Application.Interfaces;
 
 namespace PlatformGame.Test.Editor
 {
@@ -17,30 +16,26 @@ namespace PlatformGame.Test.Editor
         public void CommonInstall()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.Register<PlayerModel>(Lifetime.Scoped);
-            builder.Register<PlayerPresenter>(Lifetime.Scoped);
+            builder.Register<Entity>(Lifetime.Scoped);
+            builder.Register<PlayerController>(Lifetime.Scoped);
 
-            fakePlayer = new GameObject();
-            fakePlayer.AddComponent<Rigidbody2D>();
-            var playerInputManager = fakePlayer.AddComponent<PlayerInputManager>();
-            var playerMovement = fakePlayer.AddComponent<PlayerMovement>();
-            builder.RegisterComponent<PlayerMovement>(playerMovement).As<IPlayerMovement>();
+            IPlayerMovement mockPlayerMovement = Substitute.For<IPlayerMovement>();
+
+            builder.RegisterInstance<IPlayerMovement>(mockPlayerMovement);
 
             builder.Build().Inject(this);
 
         }
 
-
-        GameObject fakePlayer;
-        [Inject] private readonly PlayerModel playerModel;
-        [Inject] private readonly PlayerPresenter playerPresenter;
+        [Inject] private readonly Entity playerModel;
+        [Inject] private readonly PlayerController playerController;
         [Inject] private readonly IPlayerMovement playerMovement;
 
         [Test,Order(0)]
         public void When_Created_Then_InitializeProperties()
         {
             Assert.IsNotNull(playerModel);
-            Assert.IsNotNull(playerPresenter);
+            Assert.IsNotNull(playerController);
             Assert.IsNotNull(playerMovement);
         }
 
@@ -73,19 +68,32 @@ namespace PlatformGame.Test.Editor
         }
 
         [Test, Order(3)]
-        [TestCase(5,-1,-5)]
-        public void When_HorizontalInput_Then_PlayerMovement(float speed,float horizontalAxisInput, float targetVectorX)
+        public void When_HorizontalInputOnce_Then_PlayerMovementOnce()
         {
             //arrange
-            playerModel.SetMoveSpeed(speed);
-            playerMovement.Initialize();
+            var input = new Vector2(1, 0);
 
             //act
-            playerPresenter.OnPlayerMove(new Vector2(horizontalAxisInput, 0));
+            playerController.OnPlayerMove(input);
 
             //assert
-            var rigibody2D = fakePlayer.GetComponent<Rigidbody2D>();
-            Assert.AreEqual(new Vector2(targetVectorX, 0), rigibody2D.velocity);
+            playerMovement.Received(1).SetMoveVector(new Vector2(input.x * playerModel.MoveSpeed, 0f));
+            playerMovement.Received(1).StartMove();
+
+        }
+
+        [Test, Order(4)]
+        public void When_JumpInputOnce_Then_PlayerJumpOnce()
+        {
+            //arrange
+            var input = playerModel.JumpForce;
+
+            //act
+            playerController.OnPlayerJump();
+
+            //assert
+            playerMovement.Received(1).SetJumpForce(input);
+            playerMovement.Received(1).StartJump();
 
         }
 
